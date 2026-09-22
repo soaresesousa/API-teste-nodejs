@@ -8,3 +8,10 @@ export async function getPosts(){
 
     return posts; 
 };
+
+export async function getPostByID(id){
+    const posts = await getPosts();
+    const post = posts.find((post) => post.id == id);
+
+    return post;
+}
