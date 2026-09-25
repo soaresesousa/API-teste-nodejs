@@ -31,3 +31,23 @@ export async function createPost(postData){
     await fs.writeFile(fileURL, JSON.stringify(posts, null, 2));
     return post;
 }
+
+export async function updatePost(id, updateData){
+    const posts = await getPosts();
+    const indexPost = posts.findIndex((post) => post.id === id);
+
+    if(indexPost < 0) return null;
+    
+    const updatedPost = {
+        ...posts[indexPost],
+        ...updateData,
+        updatedAt: new Date().toISOString()
+    }
+
+
+    posts[indexPost] = updatedPost;
+    await fs.writeFile(fileURL, JSON.stringify(posts, null, 2));
+    
+    return updatedPost;
+    
+}
