@@ -11,7 +11,23 @@ export async function getPosts(){
 
 export async function getPostByID(id){
     const posts = await getPosts();
-    const post = posts.find((post) => post.id == id);
+    const post = posts.find((post) => post.id === id);
 
+    return post;
+}
+
+export async function createPost(postData){
+    const posts = await getPosts();
+    const id = posts.length == 0? 1 : posts[posts.length-1].id + 1;
+    const date = new Date().toISOString();
+    const post = {
+        ...postData,
+        id,
+        createdAt: date,
+        updatedAt: date
+    }
+
+    posts.push(post);
+    await fs.writeFile(fileURL, JSON.stringify(posts, null, 2));
     return post;
 }

@@ -1,5 +1,4 @@
-import { getPosts } from "../services/posts.service.js";
-import { getPostByID } from "../services/posts.service.js";
+import { getPosts, getPostByID, createPost } from "../services/posts.service.js";
 
 export async function getPostsController(req,res) {
     const posts = await getPosts();
@@ -18,4 +17,16 @@ export async function getPostByIDController(req,res){
     if(!post) return res.status(404).json({message: "Post não encontrado"});
 
     return res.status(200).json(post);
+}
+
+export async function createPostController(req,res){
+    const {title, content, author} = req.body;
+
+    const isValidContent = (value) => typeof value === "string" && value.trim().length > 0;
+
+    if(isValidContent(title) && isValidContent(content) && isValidContent(author)){
+        const createdPost = await createPost({title, content, author});
+        return res.status(201).json(createdPost);
+    }
+    return res.status(400).json({message: "Campos de title, content e author são obrigatórios"});
 }
