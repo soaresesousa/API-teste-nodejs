@@ -1,4 +1,4 @@
-import { getPosts, getPostByID, createPost, updatePost } from "../services/posts.service.js";
+import { getPosts, getPostByID, createPost, updatePost, deletePost } from "../services/posts.service.js";
 
 export async function getPostsController(req,res) {
     const posts = await getPosts();
@@ -58,4 +58,17 @@ export async function updatePostController(req,res){
     if(!updatedPost) return res.status(404).json({message: "Post a ser atualizado não encontrado!"});
 
     return res.status(200).json(updatedPost);
+}
+
+export async function deletePostController(req,res){
+    const id = Number(req.params.id);
+    if(!Number.isInteger(id) || id <= 0){
+        return res.status(400).json({message: "ID inválido"});
+    }
+
+    const responseDelete = await deletePost(id);
+
+    if(!responseDelete) return res.status(404).json({message: "Id do post não encontrado!"});
+
+    return res.status(204).send();
 }

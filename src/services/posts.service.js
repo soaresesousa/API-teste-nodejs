@@ -51,3 +51,17 @@ export async function updatePost(id, updateData){
     return updatedPost;
     
 }
+
+export async function deletePost (id){
+    const posts = await getPosts();
+
+    const index = posts.findIndex((post) => post.id === id);
+
+    if(index < 0) return null;
+
+    posts.splice(index, 1);
+
+    await fs.writeFile(fileURL, JSON.stringify(posts, null, 2));
+    return true;
+    
+}
