@@ -18,7 +18,7 @@ export async function getPostByID(id){
 
 export async function createPost(postData){
     const posts = await getPosts();
-    const id = posts.length == 0? 1 : posts[posts.length-1].id + 1;
+    const id = posts.length === 0 ? 1 : Math.max(...posts.map((post) => post.id)) + 1;
     const date = new Date().toISOString();
     const post = {
         ...postData,

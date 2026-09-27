@@ -10,16 +10,17 @@ export async function getPostByIDController(req,res){
     const id = Number(req.params.id);
 
     if(!Number.isInteger(id) || id <= 0){
-        return res.status(400).json({message: "ID inválido"});
+        return res.status(400).json({"message": "ID inválido"});
     }
 
     const post = await getPostByID(id);
-    if(!post) return res.status(404).json({message: "Post não encontrado"});
+    if(!post) return res.status(404).json({"message": "Post não encontrado"});
 
     return res.status(200).json(post);
 }
 
 export async function createPostController(req,res){
+    if(!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) return res.status(400).json({"message": "corpo da requisição inválido"});
     const {title, content, author} = req.body;
 
     const isValidContent = (value) => typeof value === "string" && value.trim().length > 0;
@@ -28,27 +29,28 @@ export async function createPostController(req,res){
         const createdPost = await createPost({title, content, author});
         return res.status(201).json(createdPost);
     }
-    return res.status(400).json({message: "Campos de title, content e author são obrigatórios"});
+    return res.status(400).json({"message": "Campos title, content e author são obrigatórios"});
 }
 
 export async function updatePostController(req,res){
     
     const id = Number(req.params.id);
     if(!Number.isInteger(id) || id <= 0){
-        return res.status(400).json({message: "ID inválido"});
+        return res.status(400).json({"message": "ID inválido"});
     }
     
+    if(!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) return res.status(400).json({"message": "corpo da requisição inválido"});
     const updateBody = req.body;
     const requestedData = Object.keys(updateBody);
     const allowedKeys = ["title", "content", "author"];
 
     const isValidField = requestedData.every((key) => allowedKeys.includes(key));
-    if(!isValidField) return res.status(400).json({message: "Campo(s) inválido(s)"});
+    if(!isValidField) return res.status(400).json({"message": "Campo inválido"});
 
     for(let key of requestedData){
         let value = updateBody[key];
 
-        if(typeof value !== 'string' || value.trim().length === 0) return res.status(400).json({message: "Campos não podem ser vazios e devem ser strings!"});
+        if(typeof value !== 'string' || value.trim().length === 0) return res.status(400).json({"message": "Os campos devem ser strings não vazias"});
     }
     
     if(requestedData.length === 0) return res.status(400).json({message: "Pelo menos um campo deve ser atualizado!"});

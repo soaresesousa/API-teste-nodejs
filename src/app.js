@@ -1,7 +1,8 @@
 import express from 'express';
 import router from './routes/posts.router.js';
+import { errorHandler } from './middlewares/error.middleware.js';
 
-const app = express();
+export const app = express();
 app.use(express.json());
 
 app.get("/health", (req,res) => {
@@ -10,8 +11,8 @@ app.get("/health", (req,res) => {
 
 app.use(router);
 
-const PORT = 3000;
-
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+app.use((req,res) => {
+    return res.status(404).json({"message": "Rota não encontrada"});
 })
+
+app.use(errorHandler);
