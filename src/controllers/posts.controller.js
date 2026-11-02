@@ -57,7 +57,7 @@ export async function updatePostController(req,res){
 
     const updatedPost = await updatePost(id,updateBody);
 
-    if(!updatedPost) return res.status(404).json({message: "Post a ser atualizado não encontrado!"});
+    if(!updatedPost) return res.status(404).json({message: "Post a ser atualizado não encontrado"});
 
     return res.status(200).json(updatedPost);
 }
