@@ -64,3 +64,26 @@ DELETE /posts/:id
 - 404: recurso não encontrado
 - 500: erro interno de servidor
 ```
+## Formato de um post retornado
+```
+{
+    "title": "string",
+    "content": "string",
+    "author": "string",
+    "id": number,
+    "createdAt": "Date",
+    "updatedAt": "Date"
+}
+```
+## Mensagens de erros
+```
+GET id inválido: "ID inválido"
+GET id inexistente: "Post não encontrado"
+POST sem todos os campos: "Campos title, content e author são obrigatórios"
+PATCH com campo vazio: "Pelo menos um campo deve ser atualizado
+PATCH com id inválido: "ID inválido"
+PATCH com id inexistente: "Post a ser atualizado não encontrado"
+PATCH com campo inválido: "campo inválido"
+DELETE com id inválido: "ID inválido"
+DELETE com id inexistente: "id do post não encontrado"
+```

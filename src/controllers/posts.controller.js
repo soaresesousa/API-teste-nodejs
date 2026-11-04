@@ -53,7 +53,7 @@ export async function updatePostController(req,res){
         if(typeof value !== 'string' || value.trim().length === 0) return res.status(400).json({"message": "Os campos devem ser strings não vazias"});
     }
     
-    if(requestedData.length === 0) return res.status(400).json({message: "Pelo menos um campo deve ser atualizado!"});
+    if(requestedData.length === 0) return res.status(400).json({message: "Pelo menos um campo deve ser atualizado"});
 
     const updatedPost = await updatePost(id,updateBody);
 
@@ -70,7 +70,7 @@ export async function deletePostController(req,res){
 
     const responseDelete = await deletePost(id);
 
-    if(!responseDelete) return res.status(404).json({message: "Id do post não encontrado!"});
+    if(!responseDelete) return res.status(404).json({message: "Id do post não encontrado"});
 
     return res.status(204).send();
 }
